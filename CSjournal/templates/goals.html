@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Goals
+{% endblock %}
+
+{% block main %}
+
+<!--Goals HTML template adapted from this: https://mdbootstrap.com/docs/standard/extended/to-do-list/ -->
+
+<section class="vh-100">
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-top h-100">
+        <div class="col">
+          <div class="card" id="list1" style="border-radius: .75rem; background-color: #eff1f2;">
+            <div class="card-body py-4 px-4 px-md-5">
+
+              <p class="h1 text-center mt-3 mb-4 pb-3 text-primary">
+                <i class="fas fa-check-square me-1"></i>
+                <u>My CS Goals</u>
+              </p>
+
+              <div class="pb-2">
+                <div class="card">
+                  <div class="card-body">
+                    <form action="/goals" method="post" class="inline">
+                    <div class="d-flex flex-row align-items-center">
+                        <textarea class="form-control" id="goal" name="goal" placeholder="Add new goal" rows="4"></textarea>
+                        <div>
+                           <button class="float-left submit-button btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                  </form>
+                  </div>
+                </div>
+              </div>
+
+<!-- table of goals-->
+              <hr class="my-4">
+              {% if goals %}
+              <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-start">Goal</th>
+                        <th class="text-start">Date Created</th>
+                        <th class="text-start">Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for goal in goals %}
+                    <tr>
+                        <td class="text-start">{{ goal["goal"] }}</td>
+                        <td class="text-start">{{ goal["date_created"] }}</td>
+                        <!-- Pop-up asking user to comfirm deletion of a goal-->
+                        {% if goal["date_completed"] %}<td class="text-start">{{ goal["date_completed"] }}</td> {% else %} <td class="text-start"></td> {% endif %}
+                        <td class="text-start"><button id="edit-btn" class="float-left btn btn-primary" onclick='editGoal({{goal["id"]}}, "{{ goal["goal"] }}", {{goal["completed"]}});'>Edit</button></td>
+                        <td class="text-start"><form action="/delete_goal" onsubmit="return confirm('Do you really want to delete this goal?');" method="post"><input type=hidden value='{{ goal["id"] }}' name=goal_id /><button class="float-left submit-button btn btn-primary" >Delete</button></form></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+   </div>
+   </div>
+   </div>
+   <!-- Pop-up asking user if they want to save the changes to their goal-->
+     <form action="/edit_goal" method="post" onsubmit="return confirm('Are you sure you want to update this goal?');" id="edit-form" style="display: none;">
+         <input type=hidden value='' name="newid" id="newid"/>
+         <textarea class="form-control" id="newgoal" name="newgoal" value = "" rows="4"></textarea>
+
+   <!-- Display checkbox for indicating whether a goal has been completed or not-->
+         <div class="form-check">
+          <label><input class="form-check-input me-0" type="checkbox" name="newcompleted" value="" id="newcompleted"
+            aria-label="Goal Completed" />Goal Completed</label>
+        </div>
+        <div>
+          <button class="submit-button btn btn-primary">Save Goal</button>
+        </div>
+     </form>
+   </div>
+   </div>
+  </section>
+
+
+
+  <script>
+    // Get references to the button and form elements
+    var editForm = document.getElementById("edit-form");
+
+    //function to edit goal
+    function editGoal(id, goal, completed)
+    {
+      //get id reference to the goal entry you want to edit
+      var goal_field = document.getElementById("newgoal");
+      var goal_id = document.getElementById("newid");
+      var goal_completed = document.getElementById("newcompleted");
+
+      //make the edit form textbox appear on the first click of the edit button
+      if (editForm.style.display === "none") {
+        editForm.style.display = "block";
+      } else {
+
+        //make edit form textbox disappear if you don't want to edit the goal (clicking edit button twice), resets goal values back to original
+        editForm.style.display = "none";
+        goal_id.value = 0;
+        goal_field.value = '';
+        goal_completed.checked = false;
+      }
+
+      goal_id.value = id;
+      goal_field.value = goal;
+
+      //checks if the current goal is checked off or not
+      if (completed == 1) {
+         goal_completed.checked = true;
+         }
+      else {
+        goal_completed.checked = false;
+        }
+    }
+  </script>
+
+
+
+
+
+{% endblock %}

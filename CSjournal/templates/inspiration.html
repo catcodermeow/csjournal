@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Inspiration
+{% endblock %}
+
+{% block main %}
+
+<!-- random cat picture generator button -->
+<button class="float-left submit-button btn btn-primary" onclick="showRandomImage()">Cheer Me Up!</button>
+<br><br>
+<div class="text-center">
+  <center>
+    <img id="random-image" class="float-left center-block contain" width="400" alt="Random Image" style="display:none;text-align:center;">
+  </center>
+
+</div>
+
+<script>
+
+      //javascript to pick a random cat picture
+      function getRandomImage() {
+        // Define an array of image file names
+        var images = ['cat1.jpg', 'cat2.jpg', 'cat3.jpg', 'cat4.jpg', 'cat5.jpg', 'cat6.jpg', 'cat7.jpg', 'cat8.jpg', 'cat9.jpg', 'cat10.jpg','cat11.jpg', 'cat12.jpg', 'cat13.jpg', 'cat14.jpg', 'cat15.jpg'];
+
+        // Choose a random index from the array
+        var randomIndex = Math.floor(Math.random() * images.length);
+
+        // Construct the URL to the randomly chosen image
+        var imageUrl = '/static/img/' + images[randomIndex];
+
+        // Return the image URL
+        return imageUrl;
+      }
+
+      //javascript to display the cat picture selected
+      function showRandomImage() {
+        // Get a reference to the HTML image element
+        var imgElement = document.getElementById('random-image');
+        imgElement.style.display = "block";
+        // Set the src attribute of the image element to a random image URL
+        imgElement.src = getRandomImage();
+      }
+
+</script>
+
+<p>
+<hr class="dotted">
+</p>
+
+<!-- Chatbot made at Steamship AI Bot Building Hackathon embedded into webpage; Chatbot is coded to address the coder as a "clever coder" and always include a motivational quote in each message-->
+<h2>Your Friendly AI Cheerleader</h2>
+
+    <iframe src="https://www.steamship.com/embed/chat?userHandle=emilysun111&workspaceHandle=your-workspace&instanceHandle=ai-personality-bot-encourage-bot"
+    width="100%"
+    height="700"
+    frameborder="0">
+    </iframe>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Journal Entry
+{% endblock %}
+
+{% block main %}
+{% if journal_entry %}
+
+<div class="center-div">
+
+    <ul class="list-group">
+        <li class="list-group-item view-entry"><strong>Journal Title: </strong>{{journal_entry.title}}</li>
+        <li class="list-group-item view-entry"><strong>Date: </strong>{{journal_entry.create_date}}</li>
+        <li class="list-group-item view-entry"><strong>Journal Entry: </strong>{{journal_entry.journal}}</li>
+      </ul>
+
+</div>
+
+{% endif %}
+{% endblock %}

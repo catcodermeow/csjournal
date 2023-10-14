@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Journals
+{% endblock %}
+
+{% block main %}
+
+<!-- table to display all previously written journal entries: title and date -->
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <bold><th class="text-start">Journal Title</th></bold>
+            <bold><th class="text-start">Date</th></bold>
+        </tr>
+    </thead>
+    <tbody>
+        {% for journal in journals %}
+        <tr>
+            <td class="text-start">{{ journal["title"] }}</td>
+            <td class="text-start">{{ journal["create_date"] }}</td>
+            <td> <form action="viewjournal" method="post">
+                <input type="hidden" name="id" value="{{journal.id}}">
+                <input type="submit" class="btn btn-primary" value="View Entry">
+            </form>
+            </td>
+        </tr>
+
+        {% endfor %}
+    </tbody>
+</table>
+    <form action="/write" class="inline">
+        <button class="btn btn-primary submit-button" >Write</button>
+    </form>
+
+
+
+{% endblock %}
